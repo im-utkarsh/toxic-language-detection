@@ -59,7 +59,12 @@ toxicity.load(threshold).then(model => {
     loading.style.display='none';
     dl.style.display='unset';
     internet_handle.innerText = '*_* Model loaded successfully. Now you can even predict offline. *_*';
-    submit.addEventListener('click',pred)
+    submit.addEventListener('click',pred);
+    document.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          pred();
+        }
+    });
     function pred() {
         let sentence = [input.value];
         model.classify(sentence).then(predictions => {
