@@ -627,7 +627,7 @@ dt {
 @media only screen and (max-width: 420px) {
     body {
         justify-content: space-around;
-        margin-bottom: 240px;
+        margin-bottom: 300px;
     }
     dt {
         display: none;
@@ -643,7 +643,7 @@ dt {
     }
     .no-internet{
         position: absolute;
-        bottom: -210px;
+        bottom: -300px;
     }
     dl {
         padding: 0;
@@ -672,6 +672,6 @@ dt {
         margin-bottom: 150px;
     }
     .no-internet{
-        bottom: -300px;
+        bottom: -270px;
     }
 }
