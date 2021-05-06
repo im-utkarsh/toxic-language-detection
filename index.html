@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+    <title>Home</title>
+</head>
+<body>
+    <div class="form__group field">
+        <input type="input" class="form__field" placeholder="Name" name="name" id='name' required />
+        <label for="text" class="form__label">Text</label>
+        <a class="arrow-up">
+            <span class="left-arm"></span>
+            <span class="right-arm"></span>
+            <span class="arrow-slide"></span>
+        </a>
+    </div>
+    <div class="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+    </div>
+    <div class="heading">Toxicity in this Sentence</div>
+    <div class="no-internet"></div>
+    <dl>
+        <dt>
+          Toxicity in this Sentence
+        </dt>
+        <dd class="percentage"><span class="text">Identity Attack : </span></dd>
+        <dd class="percentage"><span class="text">Insult : </span></dd>
+        <dd class="percentage"><span class="text">Obscene : </span></dd>
+        <dd class="percentage"><span class="text">Severe Toxicity : </span></dd>
+        <dd class="percentage"><span class="text">Sexual Explicit : </span></dd>
+        <dd class="percentage"><span class="text">Threat : </span></dd>
+        <dd class="percentage"><span class="text">Toxicity : </span></dd>
+    </dl>
+</body>
+<script>
+const threshold = 0.9;
+const percentages = document.querySelectorAll('.percentage');
+const loading = document.querySelector('.sk-chase');
+const dl = document.querySelector('dl');
+const input = document.querySelector('input');
+const submit = document.querySelector('a');
+const internet_handle = document.querySelector('.no-internet');
+const heading = document.querySelector('.heading')
+let lst = [];
+dl.style.display='none';
+internet_handle.innerText = '*_* Please wait while loading model *_*';
+
+toxicity.load(threshold).then(model => {
+    loading.style.display='none';
+    dl.style.display='unset';
+    internet_handle.innerText = '*_* Model loaded successfully. Now you can even predict offline. *_*';
+    submit.addEventListener('click',pred)
+    function pred() {
+        let sentence = [input.value];
+        model.classify(sentence).then(predictions => {
+            if (lst.length) {
+                for (var i = 6; i >= 0; i--) {
+                    let rem_class = lst.pop();
+                    percentages[i].classList.remove(rem_class);
+                }
+            }
+            for(i=0; i<7; i++){
+                let add_class = 'percentage-'+Math.round(predictions[i].results[0].probabilities[1]*100)
+                lst.push(add_class)
+                percentages[i].classList.add(add_class);
+            }
+        });
+    }
+});
+</script>
+</html>
